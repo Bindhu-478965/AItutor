@@ -3,6 +3,8 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import "./App.css";
 
+const BACKEND_URL = "https://aitutor-2mas.onrender.com/";
+
 function App() {
   const [input, setInput] = useState("");
   const [action, setAction] = useState("Explain");
@@ -18,7 +20,7 @@ function App() {
     setAnswer("");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/generate", {
+      const response = await fetch(`${BACKEND_URL}/generate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,4 +121,3 @@ function App() {
 }
 
 export default App;
-
