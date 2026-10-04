@@ -12,7 +12,10 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "https://a-itutor-liard.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -72,16 +75,24 @@ If they ask you to improve code:
 Always use Markdown code blocks when showing code.
 """
 
-    response = client.models.generate_content(
-    model="gemini-3.8-flash",
-    contents=prompt,
-    config=types.GenerateContentConfig(
-        automatic_function_calling=types.AutomaticFunctionCallingConfig(
-            disable=True
+    try:
+        response = client.models.generate_content(
+            model="gemini-3.8-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                automatic_function_calling=types.AutomaticFunctionCallingConfig(
+                    disable=True
+                )
+            )
         )
-    )
-)
 
-    return {
-        "answer": response.text
-    }
+        return {
+            "answer": response.text
+        }
+
+    except Exception as error:
+        print("Gemini error:", error)
+
+        return {
+            "answer": "Gemini is temporarily busy right now. Please try again in a moment."
+        }
