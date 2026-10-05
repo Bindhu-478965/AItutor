@@ -3,7 +3,7 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import "./App.css";
 
-const BACKEND_URL = "https://aitutor-2mas.onrender.com/";
+const BACKEND_URL = "https://aitutor-2mas.onrender.com";
 
 function App() {
   const [input, setInput] = useState("");
@@ -31,14 +31,27 @@ function App() {
         }),
       });
 
+      console.log("Backend status:", response.status);
+
       const data = await response.json();
+
+      console.log("Backend response:", data);
+
+      if (!response.ok) {
+        setAnswer(
+          `Backend error (${response.status}): ${
+            data.detail || "Something went wrong on the server."
+          }`
+        );
+        return;
+      }
 
       setAnswer(data.answer);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Connection error:", error);
 
       setAnswer(
-        "Something went wrong while connecting to the AI. Please try again."
+        "Could not connect to the backend. Please check whether the Render server is running."
       );
     } finally {
       setLoading(false);
@@ -121,3 +134,4 @@ function App() {
 }
 
 export default App;
+
