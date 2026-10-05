@@ -10,13 +10,11 @@ load_dotenv()
 
 app = FastAPI()
 
+# Allow the frontend to communicate with the backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "https://a-itutor-liard.vercel.app",
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
